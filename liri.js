@@ -1,8 +1,9 @@
 //vars
-var keys = require("./keys.js");
+require("dotenv").config();
 var fs = require("fs");
 var request = require("request");
-var Twitter = require("twitter");
+var keys = require("./keys.js");
+var spotify = new Spotify(keys.spotify);
 //var Spotify = require('spotify-web-api-node');
 var Spotify = require('node-spotify-api');
 //creates log.txt file
@@ -31,7 +32,7 @@ var getArtistNames = function(artist) {
 // Function for running a Spotify search - Command is spotify-this-song
 var getSpotify = function(songName) {
     if (songName === undefined) {
-        songName = "What's my age again";
+        songName = "alleluah";
     }
 
     spotify.search({
@@ -57,3 +58,84 @@ var getSpotify = function(songName) {
         }
     );
 };
+
+//Switch command
+function mySwitch(userCommand) {
+
+    //choose which statement (userCommand) to switch to and execute
+    switch (userCommand) {
+
+        case "concert-this":
+            getConcert();
+            break;
+
+        case "spotify-this-song":
+            getSpotify();
+            break;
+
+        case "movie-this":
+            getMovie();
+            break;
+
+        case "do-what-it-says":
+            doWhat();
+            break;
+    }
+
+    //OMDB Movie - command: movie-this
+    function getMovie() {
+        // OMDB Movie - this MOVIE base code is from class files, I have modified for more data and assigned parse.body to a Var
+        var movieName = secondCommand;
+        // Then run a request to the OMDB API with the movie specified
+        var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&tomatoes=true&apikey=trilogy";
+
+        request(queryUrl, function(error, response, body) {
+
+            // If the request is successful = 200
+            if (!error && response.statusCode === 200) {
+                var body = JSON.parse(body);
+
+                //Simultaneously output to console and log.txt via NPM simple-node-logger
+                logOutput('================ Movie Info ================');
+                logOutput("Title: " + body.Title);
+                logOutput("Release Year: " + body.Year);
+                logOutput("IMdB Rating: " + body.imdbRating);
+                logOutput("Country: " + body.Country);
+                logOutput("Language: " + body.Language);
+                logOutput("Plot: " + body.Plot);
+                logOutput("Actors: " + body.Actors);
+                logOutput("Rotten Tomatoes Rating: " + body.Ratings[2].Value);
+                logOutput("Rotten Tomatoes URL: " + body.tomatoURL);
+                logOutput('==================THE END=================');
+
+            } else {
+                //else - throw error
+                console.log("Error occurred.")
+            }
+            //Response if user does not type in a movie title
+            if (movieName === "300") {
+                console.log("-----------------------");
+                console.log("If you haven't watched '300,' then you should: http://www.imdb.com/title/tt0485947/");
+                console.log("It's on Netflix!");
+            }
+        });
+    }
+
+    //Function for command do-what-it-says; reads and splits random.txt file
+    //command: do-what-it-says
+    function doWhat() {
+        //Read random.txt file
+        fs.readFile("random.txt", "utf8", function(error, data) {
+            if (!error);
+            console.log(data.toString());
+            //split text with comma delimiter
+            var cmds = data.toString().split(',');
+        });
+    }
+
+
+
+} //Closes mySwitch func - Everything except the call must be within this scope
+
+//Call mySwitch function
+mySwitch(userCommand);

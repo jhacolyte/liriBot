@@ -16,5 +16,10 @@
   "bugs": {
     "url": "https://github.com/jhacolyte/liriBot/issues"
   },
-  "homepage": "https://github.com/jhacolyte/liriBot#readme"
+  "homepage": "https://github.com/jhacolyte/liriBot#readme",
+  "dependencies": {
+    "node-spotify-api": "^1.1.1",
+    "request": "^2.88.0",
+    "simple-node-logger": "^18.12.23"
+  }
 }
