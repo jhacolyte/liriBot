@@ -21,6 +21,22 @@ var secondCommand = process.argv[3];
 for (var i = 4; i < process.argv.length; i++) {
     secondCommand += '+' + process.argv[i];
 }
+function getConcert(){
+    var bandName = secondCommand;
+var queryURL = "https://rest.bandsintown.com/artists/" + bandName + "/events?app_id=codingbootcamp";
+
+    
+    console.log(queryURL); 
+
+    axios.get(queryURL).then(
+        function(bandResponse){
+            console.log("Venue: " + bandResponse.data[0].venue.name);
+            console.log("City: " + bandResponse.data[0].venue.city);
+            console.log((bandResponse.data[0].datetime));
+        }
+    );
+};
+
 
 // Fetch Spotify Keys
 var spotify = new Spotify(keys.spotify);
