@@ -30,35 +30,21 @@ var getArtistNames = function(artist) {
     return artist.name;
 };
 
+function getSpotify() {
+var songName = secondCommand;
 // Function for running a Spotify search - Command is spotify-this-song
-var getSpotify = function(songName) {
-    if (songName === undefined) {
-        songName = "I Want it That Way";
+
+spotify.request('https://api.spotify.com/v1/search?q=track:' + songName + '&type=track&limit=10', function(error, songResponse) {
+    if (error){
+        return console.log(error);
     }
+    console.log("Artist: " + songResponse.tracks.items[0].artists[0].name);
+    console.log("Song: " + songResponse.tracks.items[0].name);
+    console.log("URL: " + songResponse.tracks.items[0].preview_url);
+    console.log("Album: " + songResponse.tracks.items[0].album.name);
+});
+}
 
-    spotify.search({
-            type: "track",
-            query: userCommand
-        },
-        function(err, data) {
-            if (err) {
-                console.log("Error occurred: " + err);
-                return;
-            }
-            var spotify = new Spotify(keys.spotify);
-            var songs = data.tracks.items;
-
-            for (var i = 0; i < songs.length; i++) {
-                console.log(i);
-                console.log("artist(s): " + songs[i].artists.map(getArtistNames));
-                console.log("song name: " + songs[i].name);
-                console.log("preview song: " + songs[i].preview_url);
-                console.log("album: " + songs[i].album.name);
-                console.log("-----------------------------------");
-            }
-        }
-    );
-};
 
 //Switch command
 function mySwitch(userCommand) {
@@ -115,9 +101,9 @@ function mySwitch(userCommand) {
                 console.log("Error occurred.")
             }
             //Response if user does not type in a movie title
-            if (movieName === "300") {
+            if (movieName === JSON.parse(body).Title) {
                 console.log("-----------------------");
-                console.log("If you haven't watched '300,' then you should: http://www.imdb.com/title/tt0485947/");
+                console.log("If you haven't watched" + JSON.parse(body).Title, " then you should: http://www.imdb.com/title/tt0485947/");
                 console.log("It's on ThePirateBay!");
             }
         });
