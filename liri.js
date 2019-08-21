@@ -3,7 +3,8 @@ require("dotenv").config();
 var fs = require("fs");
 var request = require("request");
 var keys = require("./keys.js");
-var spotify = new Spotify(keys.spotify);
+var axios = require('Axios');
+
 //var Spotify = require('spotify-web-api-node');
 var Spotify = require('node-spotify-api');
 //creates log.txt file
@@ -32,7 +33,7 @@ var getArtistNames = function(artist) {
 // Function for running a Spotify search - Command is spotify-this-song
 var getSpotify = function(songName) {
     if (songName === undefined) {
-        songName = "alleluah";
+        songName = "I Want it That Way";
     }
 
     spotify.search({
@@ -44,7 +45,7 @@ var getSpotify = function(songName) {
                 console.log("Error occurred: " + err);
                 return;
             }
-
+            var spotify = new Spotify(keys.spotify);
             var songs = data.tracks.items;
 
             for (var i = 0; i < songs.length; i++) {
@@ -93,20 +94,21 @@ function mySwitch(userCommand) {
 
             // If the request is successful = 200
             if (!error && response.statusCode === 200) {
-                var body = JSON.parse(body);
+                
+                // var body = JSON.parse(body);
 
                 //Simultaneously output to console and log.txt via NPM simple-node-logger
-                logOutput('================ Movie Info ================');
-                logOutput("Title: " + body.Title);
-                logOutput("Release Year: " + body.Year);
-                logOutput("IMdB Rating: " + body.imdbRating);
-                logOutput("Country: " + body.Country);
-                logOutput("Language: " + body.Language);
-                logOutput("Plot: " + body.Plot);
-                logOutput("Actors: " + body.Actors);
-                logOutput("Rotten Tomatoes Rating: " + body.Ratings[2].Value);
-                logOutput("Rotten Tomatoes URL: " + body.tomatoURL);
-                logOutput('==================THE END=================');
+                console.log('================ Movie Info ================');
+                console.log("Title: " + JSON.parse(body).Title);
+                console.log("Release Year: " + JSON.parse(body).Year);
+                console.log("IMdB Rating: " + JSON.parse(body).imdbRating);
+                console.log("Country: " + JSON.parse(body).Country);
+                console.log("Language: " + JSON.parse(body).Language);
+                console.log("Plot: " + JSON.parse(body).Plot);
+                console.log("Actors: " + JSON.parse(body).Actors);
+                console.log("Rotten Tomatoes Rating: " + JSON.parse(body).Ratings[2].Value);
+                console.log("Rotten Tomatoes URL: " + JSON.parse(body).tomatoURL);
+                console.log('==================THE END=================');
 
             } else {
                 //else - throw error
@@ -116,7 +118,7 @@ function mySwitch(userCommand) {
             if (movieName === "300") {
                 console.log("-----------------------");
                 console.log("If you haven't watched '300,' then you should: http://www.imdb.com/title/tt0485947/");
-                console.log("It's on Netflix!");
+                console.log("It's on ThePirateBay!");
             }
         });
     }

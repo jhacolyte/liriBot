@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/jhacolyte/liriBot#readme",
   "dependencies": {
+    "axios": "^0.19.0",
+    "dotenv": "^8.1.0",
     "node-spotify-api": "^1.1.1",
     "request": "^2.88.0",
     "simple-node-logger": "^18.12.23"
